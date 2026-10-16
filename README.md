@@ -12,6 +12,8 @@
 
 ## 中文
 
+ℹ️由于翻译质量一般，本翻译扩展仅建议性能不高或注重节能的电脑使用，高性能电脑推荐使用[简约翻译](https://github.com/fishjar/kiss-translator)并接入本地大模型（如 [Index-Translate-2B](https://github.com/bilibili/Index-Translate)）实现高质量离线翻译。
+
 ### 这是什么
 
 一个**完全离线**的 Chromium 浏览器翻译扩展。网页翻译、划词翻译、文本翻译全部在你自己
@@ -147,6 +149,8 @@ npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
 <a id="en"></a>
 
 ## English
+
+ℹ️Because the translation quality is only average, this extension is recommended only for low-performance or power-saving computers. On a high-performance computer, use [Kiss Translator](https://github.com/fishjar/kiss-translator) with a local LLM (e.g. [Index-Translate-2B](https://github.com/bilibili/Index-Translate)) for high-quality offline translation.
 
 ### What this is
 
