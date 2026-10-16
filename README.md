@@ -137,7 +137,7 @@ npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
 - **许可证**：BSD-3-Clause。完整文本见 [LICENSE](LICENSE)。上游 Linguist 采用同一许可，
   本项目作为衍生作品保留原有版权声明并沿用该许可。
 - **翻译引擎**：Bergamot / Marian，MPL-2.0。
-- **翻译模型**：由 Mozilla 发布，MPL-2.0。模型不随本仓库分发，下载与使用请遵守其许可。
+- **翻译模型**：由 Mozilla 发布，MPL-2.0。
 - **上游项目**：本项目 fork 自 [translate-tools/linguist](https://github.com/translate-tools/linguist)。
 - **隐私**：扩展不收集、不上传任何数据。翻译内容、历史记录、词典与导入的模型均只保存在
   本机。安装包内不含任何远程端点，可用 `npm run audit:offline` 复核。
@@ -287,8 +287,7 @@ npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
 - **License**: BSD-3-Clause. Full text in [LICENSE](LICENSE). Upstream Linguist uses the same
   licence; this fork keeps the original copyright notice and continues under it.
 - **Translation engine**: Bergamot / Marian, MPL-2.0.
-- **Translation models**: published by Mozilla under MPL-2.0. They are not distributed in this
-  repository; their download and use are subject to that licence.
+- **Translation models**: published by Mozilla under MPL-2.0.
 - **Upstream**: this project is a fork of
   [translate-tools/linguist](https://github.com/translate-tools/linguist).
 - **Privacy**: the extension collects and uploads nothing. Translations, history, dictionary and
