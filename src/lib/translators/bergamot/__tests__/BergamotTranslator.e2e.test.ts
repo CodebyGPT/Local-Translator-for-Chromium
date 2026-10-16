@@ -198,19 +198,32 @@ describe('BergamotTranslator integration', () => {
 		(globalThis as any).Worker = originalWorker;
 	});
 
-	test('translates English to Chinese with the bundled model', async () => {
-		const { BergamotTranslator } = await import('../BergamotTranslator');
+	/**
+	 * This extension ships no models, so there is usually nothing to translate.
+	 * The test still has to hold for a build that bundles some (`fetch:models
+	 * --pairs …`), which is why it is conditional rather than deleted.
+	 */
+	const bundledPairs = Object.keys(
+		JSON.parse(readFileSync(path.join(MODELS, 'index.json'), 'utf8')),
+	);
 
-		const languages = await BergamotTranslator.initSupportedLanguages();
-		expect(languages).toContain('en');
-		expect(languages).toContain('zh');
+	test.skipIf(!bundledPairs.includes('en\tzh-Hans'))(
+		'translates English to Chinese with the bundled model',
+		async () => {
+			const { BergamotTranslator } = await import('../BergamotTranslator');
 
-		const translator = new BergamotTranslator();
-		const translated = await translator.translate('Hello world', 'en', 'zh');
+			const languages = await BergamotTranslator.initSupportedLanguages();
+			expect(languages).toContain('en');
+			expect(languages).toContain('zh');
 
-		expect(typeof translated).toBe('string');
-		// Output must be real Chinese, not an echo of the input.
-		expect(translated).not.toBe('Hello world');
-		expect(translated).toMatch(/[\u4e00-\u9fff]/);
-	}, 120_000);
+			const translator = new BergamotTranslator();
+			const translated = await translator.translate('Hello world', 'en', 'zh');
+
+			expect(typeof translated).toBe('string');
+			// Output must be real Chinese, not an echo of the input.
+			expect(translated).not.toBe('Hello world');
+			expect(translated).toMatch(/[\u4e00-\u9fff]/);
+		},
+		120_000,
+	);
 });

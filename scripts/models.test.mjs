@@ -12,7 +12,7 @@
  */
 
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,7 +21,8 @@ import test from 'node:test';
 import { MODEL_PARTS, selectRecords } from './fetch-models.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const REGISTRY_PATH = path.join(ROOT, 'models', 'index.json');
+const MODELS_DIR = path.join(ROOT, 'models');
+const REGISTRY_PATH = path.join(MODELS_DIR, 'index.json');
 
 /**
  * Registry keys are `<from>\t<to>`; the runtime splits them the same way.
@@ -111,19 +112,14 @@ test(
 		const registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf8'));
 		const keys = Object.keys(registry);
 
-		assert.ok(keys.length > 0, 'registry is empty');
-		assert.ok(
-			keys.some((key) => key.endsWith('\tzh-Hans')),
-			'Simplified Chinese is not bundled',
-		);
+		// An empty registry is the default: this extension ships no models, and
+		// `fetch:models` writes `{}` unless `--pairs`/`--all` asks for some.
+		// Whatever is present still has to be complete and match its hashes.
+		if (keys.length === 0) return;
 
 		for (const key of keys) {
 			const [from, to] = parseRegistryKey(key);
 			assert.ok(from && to, `invalid registry key ${JSON.stringify(key)}`);
-			assert.ok(
-				!from.includes('-') || from === `zh${from.slice(2)}`,
-				`unexpected source code ${from}`,
-			);
 
 			const files = registry[key];
 			assert.ok(files.model, `${key} has no model`);
@@ -148,14 +144,50 @@ test(
 	},
 );
 
-test('Chinese model pairs map to the plain zh UI code', () => {
-	const registryLanguages = new Set(['en']);
-	Object.keys(JSON.parse(readFileSync(REGISTRY_PATH, 'utf8'))).forEach((key) => {
-		const [from, to] = parseRegistryKey(key);
-		registryLanguages.add(toUiLanguage(from));
-		registryLanguages.add(toUiLanguage(to));
-	});
+test(
+	'default build ships no translation models',
+	{ skip: !registryExists && 'run `npm run fetch:models` first' },
+	() => {
+		const registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf8'));
 
-	assert.ok(registryLanguages.has('zh'), 'zh missing from supported languages');
-	assert.ok(registryLanguages.has('en'), 'en missing from supported languages');
+		// Guards the product decision: models are imported, not bundled. A build
+		// that suddenly ships models should be a deliberate change, not drift.
+		assert.deepEqual(
+			Object.keys(registry),
+			[],
+			'the default registry should be empty; pass --pairs to bundle models',
+		);
+
+		const modelFiles = existsSync(MODELS_DIR)
+			? readdirSync(MODELS_DIR, { recursive: true }).filter((name) =>
+					String(name).endsWith('.bin') || String(name).endsWith('.spm'),
+				)
+			: [];
+
+		assert.deepEqual(modelFiles, [], 'model files found in the default build');
+	},
+);
+
+test('Chinese model pairs map to the plain zh UI code', () => {
+	// Mirrors `BergamotTranslator.initSupportedLanguages`: the released models are
+	// script-qualified, the UI and `browser.i18n.detectLanguage` are not.
+	const languagesFrom = (keys) => {
+		const languages = new Set(['en']);
+		keys.forEach((key) => {
+			const [from, to] = parseRegistryKey(key);
+			languages.add(toUiLanguage(from));
+			languages.add(toUiLanguage(to));
+		});
+		return languages;
+	};
+
+	const bundled = languagesFrom(['en\tzh-Hans', 'zh-Hans\ten']);
+	assert.ok(bundled.has('zh'), 'zh-Hans should map to zh');
+	assert.ok(!bundled.has('zh-Hans'), 'script-qualified codes should be collapsed');
+
+	const traditional = languagesFrom(['zh-Hant\ten']);
+	assert.ok(traditional.has('zh'), 'zh-Hant should map to zh');
+
+	const european = languagesFrom(['en\tde', 'de\ten']);
+	assert.deepEqual([...european].sort(), ['de', 'en']);
 });

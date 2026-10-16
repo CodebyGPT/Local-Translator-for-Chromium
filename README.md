@@ -105,6 +105,12 @@ npm test                 # 应用测试套件
 npm run audit:offline -- build/chromium   # 审计：产物中不得出现任何远程地址
 ```
 
+打一个发布用的模型包（生成 `dist/local-translator-models.zip`，含 `manifest.json`）：
+
+```bash
+npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
+```
+
 ### 法律信息
 
 - **许可证**：BSD-3-Clause。完整文本见 [LICENSE](LICENSE)。上游 Linguist 采用同一许可，
@@ -221,6 +227,13 @@ npm run test:worker      # translates English to Chinese with the built artifact
 npm run test:browser     # loads the extension into a real Chromium (uses your Chromium/Chrome)
 npm test                 # application test suite
 npm run audit:offline -- build/chromium   # fails if any remote endpoint shipped
+```
+
+Build a distributable model pack (`dist/local-translator-models.zip`, with a
+`manifest.json` inside):
+
+```bash
+npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
 ```
 
 ### Legal
