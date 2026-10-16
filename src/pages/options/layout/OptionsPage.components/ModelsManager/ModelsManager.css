@@ -1,0 +1,56 @@
+.ModelsManager {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	max-width: 40rem;
+}
+
+.ModelsManager-Import {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.ModelsManager-Hint,
+.ModelsManager-Size {
+	margin: 0;
+	opacity: 0.7;
+	font-size: 0.9em;
+}
+
+.ModelsManager-List {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.ModelsManager-Item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.25rem 0;
+	border-bottom: 1px solid rgb(0 0 0 / 8%);
+}
+
+.ModelsManager-ItemLabel {
+	font-weight: 500;
+}
+
+.ModelsManager-ItemParts {
+	flex: 1;
+	opacity: 0.6;
+	font-size: 0.85em;
+}
+
+.ModelsManager-Message {
+	margin: 0;
+	color: #1a7f37;
+}
+
+.ModelsManager-Error {
+	margin: 0;
+	color: #b42318;
+}

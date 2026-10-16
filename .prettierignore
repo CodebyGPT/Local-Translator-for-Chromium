@@ -1,0 +1,13 @@
+# directories
+node_modules
+**/build
+**/.docusaurus
+modules
+test
+thirdparty
+
+# files
+*.d.ts
+*.html
+*.md
+package-lock.json

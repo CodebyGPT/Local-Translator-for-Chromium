@@ -1,0 +1,31 @@
+﻿# NPM
+.npmrc
+node_modules
+**/node_modules
+
+# Editors
+.idea
+.vscode
+debug.log
+
+# Temporary files
+/build
+/tmp
+/dist
+
+# Local files
+.env
+.local
+
+# Translation models + registry: produced at build time by
+# `npm run fetch:models`, ~100 MB per direction. Not committed.
+/models
+
+# Bergamot WASM engine: produced at build time by `npm run fetch:engine`.
+thirdparty/bergamot/build/
+
+# Reference checkouts of upstream sources, kept next to this project.
+/linguist-master
+/MTranServer-main
+/translations-main
+/bergamot-translator-main

@@ -1,0 +1,10 @@
+# Build-only compose file. No service, port, or volume is used at runtime —
+# the extension itself never talks to the network.
+version: "3"
+services:
+  builder:
+    user: node
+    build:
+      context: .
+    volumes:
+      - ./build:/mnt/builder/build

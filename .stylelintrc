@@ -1,0 +1,14 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "selector-class-pattern": null,
+    "no-descending-specificity": null
+  },
+  "ignoreFiles": [
+    "**/*.ts",
+    "**/*.tsx",
+    "dist/**",
+    "examples/components-list/dist/**",
+    "src/theme/presets/**/*.css"
+  ]
+}

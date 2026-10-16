@@ -1,0 +1,43 @@
+{
+	"compilerOptions": {
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"target": "esnext",
+		"esModuleInterop": true,
+		"strict": true,
+		"alwaysStrict": true,
+		"strictFunctionTypes": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"declaration": false,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"pretty": true,
+		"preserveConstEnums": true,
+		"removeComments": false,
+		"sourceMap": true,
+		"lib": ["esnext", "dom", "dom.iterable"],
+		"rootDir": ".",
+		"jsx": "react",
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"types": ["vitest/globals"]
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx", "thirdparty/**/*.ts", "test/**/*.ts"],
+	"exclude": [
+		"node_modules",
+		"build",
+		"linguist-master",
+		"MTranServer-main",
+		"translations-main",
+		"bergamot-translator-main",
+		"thirdparty/bergamot/build"
+	]
+}
