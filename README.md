@@ -12,7 +12,7 @@
 
 ## 中文
 
-ℹ️由于翻译质量一般，本翻译扩展仅建议性能不高或注重节能的电脑使用，高性能电脑推荐使用[简约翻译](https://github.com/fishjar/kiss-translator)并接入本地大模型（如 [Index-Translate-2B](https://github.com/bilibili/Index-Translate)）实现高质量离线翻译。
+ℹ️本扩展适合性能不高或侧重节能的电脑使用，高性能电脑的用户如果希望实现更高的离线翻译质量，推荐使用[简约翻译](https://github.com/fishjar/kiss-translator)并接入本地大模型（如 [Index-Translate-2B](https://github.com/bilibili/Index-Translate)）。
 
 ### 这是什么
 
@@ -20,8 +20,7 @@
 的电脑上完成，使用 Firefox 内置翻译所用的同一个引擎（[Bergamot](https://browser.mt)，
 编译为 WebAssembly）。
 
-它不是任何商业翻译接口的壳。没有云端翻译、没有遥测、没有崩溃上报、没有自动更新。
-唯一会联网的地方是构建阶段的模型下载脚本，运行在你自己机器上。
+它不是任何商业翻译接口的壳。没有云端翻译、没有遥测、没有崩溃上报、没有自动更新，不会外发任何数据。
 
 ### 技术亮点
 
@@ -150,7 +149,7 @@ npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
 
 ## English
 
-ℹ️Because the translation quality is only average, this extension is recommended only for low-performance or power-saving computers. On a high-performance computer, use [Kiss Translator](https://github.com/fishjar/kiss-translator) with a local LLM (e.g. [Index-Translate-2B](https://github.com/bilibili/Index-Translate)) for high-quality offline translation.
+ℹ️This extension suits lower-performance or power-saving computers. If you are on a high-performance computer and want better offline translation quality, use [Kiss Translator](https://github.com/fishjar/kiss-translator) with a local LLM (e.g. [Index-Translate-2B](https://github.com/bilibili/Index-Translate)).
 
 ### What this is
 
@@ -159,8 +158,7 @@ translation and text translation all happen on your own machine, using the same 
 uses for its built-in translations ([Bergamot](https://browser.mt), compiled to WebAssembly).
 
 It is not a wrapper around a commercial translation API. There is no cloud translator, no
-telemetry, no crash reporting and no auto-updater. The only code that touches the network is the
-build-time model fetcher, which runs on your machine.
+telemetry, no crash reporting and no auto-updater, and no data is ever sent out.
 
 ### Technical highlights
 
