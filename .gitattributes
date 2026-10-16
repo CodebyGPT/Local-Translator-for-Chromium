@@ -1,0 +1,17 @@
+# Normalise line endings so the shell scripts and JSON stay LF everywhere.
+# Without this, a Windows checkout rewrites them as CRLF and the build tooling
+# sees spurious diffs (and `#!/bin/sh` scripts break on Unix).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.wasm binary
+*.bin binary
+*.spm binary
+*.zip binary
+*.ttf binary
+*.woff binary
+*.woff2 binary

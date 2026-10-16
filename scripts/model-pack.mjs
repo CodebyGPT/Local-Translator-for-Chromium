@@ -138,9 +138,19 @@ const crcTable = (() => {
 	return table;
 })();
 
+/**
+ * CRC-32 of a buffer.
+ *
+ * Indexed loop rather than `for...of`: models run to tens of megabytes, and the
+ * iterator protocol makes this the slowest part of packing by far.
+ */
 function crc32(buffer) {
 	let crc = -1;
-	for (const byte of buffer) crc = crcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+
+	for (let index = 0; index < buffer.length; index++) {
+		crc = crcTable[(crc ^ buffer[index]) & 0xff] ^ (crc >>> 8);
+	}
+
 	return (crc ^ -1) >>> 0;
 }
 
@@ -272,8 +282,6 @@ async function main() {
 	const manifest = [];
 
 	for (const [pair, { architecture, byFileType }] of perPair) {
-		const pairDir = pair.replace('-', '/');
-
 		for (const [fileType, record] of byFileType) {
 			const filename = path.basename(record.attachment.filename).replace(/\.zst$/, '');
 
@@ -301,7 +309,10 @@ async function main() {
 				await writeFile(cached, raw);
 			}
 
-			const name = `${pairDir}/${filename}`;
+			// Flat archive: the file names already carry the language code, and a
+			// flat layout lets the whole set be selected in one go in the settings
+			// page's file picker, which cannot span directories.
+			const name = filename;
 			entries.push({ name, data: raw });
 			manifest.push({
 				name,

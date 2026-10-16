@@ -14,6 +14,7 @@
 		"fetch:engine": "node scripts/fetch-engine.mjs",
 		"fetch:models": "node scripts/fetch-models.mjs",
 		"model-pack": "node scripts/model-pack.mjs",
+		"zip:dir": "node scripts/zip-dir.mjs",
 		"audit:offline": "node scripts/audit-offline.mjs",
 		"rebrand:locales": "node scripts/rebrand-locales.mjs",
 		"add:locale-keys": "node scripts/add-locale-keys.mjs",
