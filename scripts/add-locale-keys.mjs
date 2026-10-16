@@ -29,6 +29,7 @@ const KEYS = {
 	modelsManager_remove: 'Remove',
 	modelsManager_removeAll: 'Remove all imported models',
 	modelsManager_nothingSelected: 'No usable model files were selected.',
+	modelsManager_working: 'Importing… large models can take a few seconds.',
 };
 
 async function main() {

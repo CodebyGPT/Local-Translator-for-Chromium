@@ -7,14 +7,14 @@ import React, {
 	useState,
 } from 'react';
 
+import { importModelFiles } from '../../../../../lib/models/import';
+import { getLanguageNameByCode, getMessage } from '../../../../../lib/language';
 import {
 	clearImportedModels,
 	deleteImportedModel,
 	getImportedModels,
-	importModels,
 	refreshModels,
 } from '../../../../../requests/backend/models';
-import { getLanguageNameByCode, getMessage } from '../../../../../lib/language';
 
 import './ModelsManager.css';
 
@@ -35,8 +35,13 @@ const formatSize = (bytes: number) => {
  * Import and manage translation models.
  *
  * The extension ships no models, so this page is how a language pair becomes
- * available. Files are copied into the extension's own storage; nothing is
- * uploaded anywhere.
+ * available. Nothing is uploaded anywhere.
+ *
+ * The import itself runs **here**, not in the background: model files are tens of
+ * megabytes and extension messaging JSON-serialises its payload, which turns a
+ * `File` into `{}`. Storing them from this page into the extension's own
+ * IndexedDB keeps the bytes out of the message channel entirely, and the engine
+ * reads them back from the same database.
  */
 export const ModelsManager: FC = () => {
 	const [pairs, setPairs] = useState<ImportedPair[]>([]);
@@ -69,7 +74,7 @@ export const ModelsManager: FC = () => {
 			setErrors([]);
 
 			try {
-				const result = await importModels({ files: Array.from(files) });
+				const result = await importModelFiles(files);
 
 				if (result.imported.length > 0) {
 					await refreshModels();
@@ -154,6 +159,8 @@ export const ModelsManager: FC = () => {
 			</label>
 
 			<p className="ModelsManager-Hint">{getMessage('modelsManager_hint')}</p>
+
+			{busy && <p className="ModelsManager-Hint">{getMessage('modelsManager_working')}</p>}
 
 			{size > 0 && (
 				<p className="ModelsManager-Size">

@@ -649,5 +649,8 @@
 	},
 	"modelsManager_nothingSelected": {
 		"message": "No usable model files were selected."
+	},
+	"modelsManager_working": {
+		"message": "Importing… large models can take a few seconds."
 	}
 }

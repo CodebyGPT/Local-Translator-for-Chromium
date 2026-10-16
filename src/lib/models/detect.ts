@@ -43,6 +43,11 @@ export const isModelPart = (value: string): value is ModelPart =>
  * not look like a model file we can use.
  */
 export const parseModelFilename = (name: string): ParsedModelFile | null => {
+	// Guard the shape rather than trusting the caller: this is fed names that have
+	// crossed a message boundary, where a structured object can arrive without its
+	// properties (a `File` serialises to `{}` over extension messaging).
+	if (typeof name !== 'string' || name === '') return null;
+
 	const lower = name.toLowerCase();
 
 	for (const { prefix, part } of PART_PREFIXES) {

@@ -54,9 +54,11 @@ export const [getImportedModelsFactory, getImportedModels] = buildBackendRequest
 /**
  * Import model files the user picked.
  *
- * The files are `File` values straight from an `<input type="file">`, which
- * survive structured clone. Only metadata crosses this boundary -- the bytes go
- * into the extension's own storage and are read back by the engine in place.
+ * Model files are stored by the settings page itself, because extension
+ * messaging JSON-serialises its payload and would reduce a `File` to `{}`:
+ * tens of megabytes of model data must not travel through it. This handler
+ * exists only so a caller that already holds plain `{ name, ... }` descriptors
+ * (tests, or a future importer) can register a pair without the picker.
  */
 export const [importModelsFactory, importModels] = buildBackendRequest<
 	{ files: File[] },
@@ -68,7 +70,7 @@ export const [importModelsFactory, importModels] = buildBackendRequest<
 	factoryHandler:
 		() =>
 		async ({ files }) => {
-			const outcome = await importModelFiles(files);
+			const outcome = await importModelFiles(files ?? []);
 
 			return {
 				imported: outcome.imported.map(({ from, to }) => ({ from, to })),

@@ -1,4 +1,4 @@
-import { ImportedModelFetch, LanguagesDirection, ModelFiles } from '../types';
+import { LanguagesDirection, ModelFiles } from '../types';
 
 export type BergamotTranslatorWorkerOptions = {
 	cacheSize?: number;
@@ -10,14 +10,6 @@ export type BergamotTranslatorWorkerOptions = {
  */
 export type IBergamotTranslatorWorker = {
 	initialize: (options?: BergamotTranslatorWorkerOptions) => Promise<void>;
-
-	/**
-	 * Attach the resolver for `model-store://` URLs (imported models).
-	 *
-	 * Separate from `initialize` because a function cannot survive the worker
-	 * message channel, so it is bound on the worker instance by the host.
-	 */
-	setImportedModelResolver: (resolver: ImportedModelFetch) => void;
 
 	hasTranslationModel: (model: LanguagesDirection) => boolean;
 	loadTranslationModel: (

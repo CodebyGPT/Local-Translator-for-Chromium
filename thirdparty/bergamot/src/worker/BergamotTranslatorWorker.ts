@@ -6,7 +6,6 @@
  */
 
 import {
-	ImportedModelFetch,
 	LanguagesDirection,
 	MODEL_STORE_SCHEME,
 	ModelConfig,
@@ -81,22 +80,6 @@ export class BergamotTranslatorWorker implements IBergamotTranslatorWorker {
 	static readonly NATIVE_INT_GEMM = 'mozIntGemm';
 
 	private options: BergamotTranslatorWorkerOptions = {};
-
-	/**
-	 * Resolves `model-store://` URLs for models the user imported.
-	 *
-	 * Assigned by the host application after construction; a function cannot
-	 * travel through worker `postMessage`, so it is bound on the worker instance
-	 * rather than passed in `initialize()`.
-	 */
-	public importedModelFetch?: ImportedModelFetch;
-
-	/**
-	 * Bind the resolver for imported models. See `importedModelFetch`.
-	 */
-	public setImportedModelResolver(resolver: ImportedModelFetch) {
-		this.importedModelFetch = resolver;
-	}
 
 	private models = new Map<string, Promise<TranslationModel>>();
 
@@ -333,21 +316,18 @@ export class BergamotTranslatorWorker implements IBergamotTranslatorWorker {
 	 * Read one model file.
 	 *
 	 * Two URL shapes reach here: an extension URL for a model shipped in the
-	 * package, and `model-store://<key>` for one the user imported. The latter is
-	 * handed to `importedModelFetch`, which the host application supplies -- this
-	 * worker has no storage of its own, and deliberately so, because it means the
-	 * bytes never cross a context boundary.
+	 * package, and `model-store://<hash>` for one the user imported.
+	 *
+	 * The imported case is read straight out of the extension's IndexedDB with the
+	 * raw browser API. The worker bundle is built separately and cannot import the
+	 * application's storage module, and neither a function nor a large buffer can
+	 * be handed to a worker over `postMessage` (Chromium drops the contents of
+	 * large buffers). Reading here, next to the code that consumes the bytes, is
+	 * therefore the one approach that needs nothing extra at build time.
 	 */
 	private async fetchModelFile(url: string): Promise<ArrayBuffer> {
 		if (url.startsWith(MODEL_STORE_SCHEME)) {
-			const resolver = this.importedModelFetch;
-			if (!resolver) {
-				throw new Error(
-					`This build cannot read imported models (no resolver for ${url})`,
-				);
-			}
-
-			return resolver(url);
+			return this.readImportedModelFile(url.slice(MODEL_STORE_SCHEME.length).replace(/^\/\//, ''));
 		}
 
 		const response = await self.fetch(url);
@@ -356,6 +336,63 @@ export class BergamotTranslatorWorker implements IBergamotTranslatorWorker {
 		}
 
 		return response.arrayBuffer();
+	}
+
+	/**
+	 * Read one imported model file out of the extension's own IndexedDB.
+	 *
+	 * Mirrors the schema in `src/lib/models/storage.ts`: a `files` store keyed by
+	 * content hash, holding `{ hash, name, size, blob, importedAt }`.
+	 */
+	private readImportedModelFile(hash: string): Promise<ArrayBuffer> {
+		return new Promise((resolve, reject) => {
+			const openRequest = indexedDB.open('translationModels', 1);
+
+			openRequest.onerror = () =>
+				reject(
+					new Error(
+						`Could not open model storage to read ${hash}: ${openRequest.error?.message}`,
+					),
+				);
+
+			openRequest.onsuccess = () => {
+				const db = openRequest.result;
+
+				if (!db.objectStoreNames.contains('files')) {
+					db.close();
+					reject(new Error(`Imported model file is missing from storage: ${hash}`));
+					return;
+				}
+
+				const getRequest = db
+					.transaction('files', 'readonly')
+					.objectStore('files')
+					.get(hash);
+
+				getRequest.onerror = () => {
+					db.close();
+					reject(
+						new Error(
+							`Could not read imported model file ${hash}: ${getRequest.error?.message}`,
+						),
+					);
+				};
+
+				getRequest.onsuccess = () => {
+					const record = getRequest.result as { blob?: Blob } | undefined;
+					db.close();
+
+					if (!record?.blob) {
+						reject(
+							new Error(`Imported model file is missing from storage: ${hash}`),
+						);
+						return;
+					}
+
+					record.blob.arrayBuffer().then(resolve, reject);
+				};
+			};
+		});
 	}
 
 	private instantiateTranslationModel(

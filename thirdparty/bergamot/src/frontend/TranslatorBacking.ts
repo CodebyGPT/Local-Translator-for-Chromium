@@ -9,7 +9,6 @@ import {
 } from '../worker/types';
 
 import {
-	ImportedModelFetch,
 	ImportedModelPair,
 	LanguagesDirection,
 	MODEL_STORE_SCHEME,
@@ -166,12 +165,6 @@ export class TranslatorBacking {
 		// Await initialisation. This will also nicely error out if the WASM
 		// runtime fails to load.
 		await call('initialize', this.options);
-
-		if (this.importedModelFetch) {
-			// A function cannot travel through `postMessage`, so the resolver for
-			// imported models is attached to the worker after it is constructed.
-			await call('setImportedModelResolver', [this.importedModelFetch]);
-		}
 
 		/**
 		 * Little wrapper around the message passing api of Worker to make it
@@ -470,10 +463,9 @@ export class TranslatorBacking {
 	 * Look up a model the user imported, if any.
 	 *
 	 * Imported models live in the host application's storage, addressed with a
-	 * `model-store://` URL. The host supplies the lookup
-	 * (`importedModelsProvider`) and the resolver that turns those URLs into
-	 * bytes (`importedModelFetch`) when the worker asks for them, so this file
-	 * stays free of storage details and the worker needs no storage access.
+	 * `model-store://` URL. The host supplies the list of directions
+	 * (`importedModelsProvider`); the worker reads the files themselves, so it
+	 * needs no resolver and no bytes cross a context boundary.
 	 */
 	protected async findImportedModel({
 		from,
@@ -520,18 +512,11 @@ export class TranslatorBacking {
 	/**
 	 * Supplies the language pairs the user imported.
 	 *
-	 * Set by the host application; unset means "no imported models".
+	 * Set by the host application; unset means "no imported models". The worker
+	 * reads the files themselves, straight from the same storage, so no resolver
+	 * has to cross the worker boundary.
 	 */
 	importedModelsProvider?: () => Promise<ImportedModelPair[]>;
-
-	/**
-	 * Resolves a `model-store://` URL to bytes.
-	 *
-	 * Set by the host application and handed to the worker, which has no storage
-	 * of its own. The worker falls back to plain `fetch` when this is unset,
-	 * which is what bundled models use.
-	 */
-	importedModelFetch?: ImportedModelFetch;
 
 	/**
 	 * Reads a model file.
@@ -544,14 +529,6 @@ export class TranslatorBacking {
 	 * @returns {Promise<ArrayBuffer>}
 	 */
 	async fetch(url: string) {
-		if (url.startsWith(MODEL_STORE_SCHEME)) {
-			if (!this.importedModelFetch) {
-				throw new Error(`No resolver for imported model URL ${url}`);
-			}
-
-			return this.importedModelFetch(url);
-		}
-
 		const resolved = this.resolveUrl(url);
 
 		// Rig up a timeout cancel signal for our fetch
@@ -642,8 +619,38 @@ export class TranslatorBacking {
 	 * @param {string} to
 	 * @returns {Promise<TranslationModel[]>}
 	 */
+	/**
+	 * Every model this backing can use: the bundled registry plus the user's
+	 * imported pairs.
+	 *
+	 * Imported models carry no metadata beyond their direction, which is all
+	 * `findModels` reads, so they are represented by a minimal entry. A bundled
+	 * entry takes precedence when both exist for the same direction, since it is
+	 * the one that ships with the version and has complete file information.
+	 */
+	protected async allModels(): Promise<TranslationModel[]> {
+		const bundled = await this.registry;
+		if (this.importedModelsProvider === undefined) return bundled;
+
+		let imported: ImportedModelPair[] = [];
+		try {
+			imported = await this.importedModelsProvider();
+		} catch (error) {
+			console.warn('Could not read imported models', error);
+		}
+
+		if (imported.length === 0) return bundled;
+
+		const known = new Set(bundled.map(({ from, to }) => `${from}\t${to}`));
+		const extra = imported
+			.filter(({ from, to }) => !known.has(`${from}\t${to}`))
+			.map(({ from, to }) => ({ from, to }) as unknown as TranslationModel);
+
+		return [...bundled, ...extra];
+	}
+
 	async findModels(from: string, to: string) {
-		const registry = await this.registry;
+		const registry = await this.allModels();
 
 		const availableLanguages = new Set<string>();
 		registry.forEach(({ from, to }) => {

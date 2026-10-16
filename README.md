@@ -3,88 +3,135 @@
 <h1 align="center">Local Translator for Chromium</h1>
 
 <p align="center">
-  <a href="#zh">涓枃</a> 路 <a href="#en">English</a>
+  <a href="#zh">中文</a> · <a href="#en">English</a>
 </p>
 
 ---
 
 <a id="zh"></a>
 
-## 涓枃
+## 中文
 
-### 杩欐槸浠€涔?
-涓€涓?*瀹屽叏绂荤嚎**鐨?Chromium 娴忚鍣ㄧ炕璇戞墿灞曘€傜綉椤电炕璇戙€佸垝璇嶇炕璇戙€佹枃鏈炕璇戝叏閮ㄥ湪浣犺嚜宸?鐨勭數鑴戜笂瀹屾垚锛屼娇鐢?Firefox 鍐呯疆缈昏瘧鎵€鐢ㄧ殑鍚屼竴涓紩鎿庯紙[Bergamot](https://browser.mt)锛?缂栬瘧涓?WebAssembly锛夈€?
-瀹冧笉鏄换浣曞晢涓氱炕璇戞帴鍙ｇ殑澹炽€傛病鏈変簯绔炕璇戙€佹病鏈夐仴娴嬨€佹病鏈夊穿婧冧笂鎶ャ€佹病鏈夎嚜鍔ㄦ洿鏂般€?鍞竴浼氳仈缃戠殑鍦版柟鏄瀯寤洪樁娈电殑妯″瀷涓嬭浇鑴氭湰锛岃繍琛屽湪浣犺嚜宸辨満鍣ㄤ笂銆?
-### 鎶€鏈寒鐐?
-- **寮曟搸涓?Firefox 鍚屾簮銆?* 浣跨敤 Mozilla 閫氳繃 Remote Settings 鍙戝竷鐨?Bergamot WASM
-  锛坄v0.4.5`锛屼笌 Firefox 122 鍐呯疆鐨勫畬鍏ㄤ竴鑷达級锛屾ā鍨嬫枃浠舵牸寮忋€佺簿搴﹂厤缃紙`int8shiftAlphaAll`锛?  涓庤瘝琛ㄥ竷灞€閮戒笌 Firefox 淇濇寔涓€鑷淬€?- **鏀寔涓枃銆?* 涓枃鎸夊瓧褰㈠垎寮€鍙戝竷锛坄zh-Hans` / `zh-Hant`锛夛紝鎵╁睍鍐呴儴缁熶竴鏄犲皠涓?`zh`锛?  涓?`browser.i18n.detectLanguage` 鍜岀晫闈㈣瑷€鐮佷繚鎸佷竴鑷淬€?- **妯″瀷涓嶉殢鍖呭垎鍙戙€?* 姣忎釜璇█鏂瑰悜鍔ㄨ緞鍑犲崄 MB锛屽澶氭暟浜烘棤鐢ㄣ€傛墿灞曢粯璁?*涓嶅寘鍚换浣?  缈昏瘧妯″瀷**锛岀敱浣犲湪璁剧疆鐣岄潰瀵煎叆锛屾垨浠?Release 涓嬭浇妯″瀷鍖呫€?- **妯″瀷瀛楄妭涓嶈法涓婁笅鏂囦紶閫掋€?* 杩欐槸鏈」鐩殑鏍稿績璁捐绾︽潫锛歁V3 鐨勫悗鍙?Service Worker
-  鏃犳硶鍒涘缓 `Worker`锛岀炕璇戣窇鍦?offscreen document 閲岋紝鑰屾ā鍨嬫暟鎹棦杩囦笉浜?  `runtime.sendMessage`锛圕hromium 涓婇檺 64 MiB锛夛紝涔熻繃涓嶄簡闀胯繛 `MessagePort`
-  锛堝ぇ `ArrayBuffer` 鐨勫唴瀹逛細琚潤榛樹涪寮冿級銆傚洜姝ゅ悗鍙板彧浼犻€?*鏂囦欢 URL**锛岀敱鐪熸闇€瑕佸瓧鑺傜殑
-  worker 鑷繁璇诲彇 鈥斺€?鏃犺妯″瀷鍦ㄦ墿灞曞寘閲岃繕鏄湪浣犲鍏ョ殑瀛樺偍閲屻€?- **瀵煎叆鐨勬ā鍨嬪氨鍦拌鍙栥€?* 瀵煎叆鐨勬ā鍨嬪瓨杩涙墿灞曡嚜宸辩殑 IndexedDB锛寃orker 鍦ㄥ悓涓€鏉ユ簮涓嬬洿鎺?  璇诲彇锛屽叏绋嬩笉缁忚繃娑堟伅閫氶亾銆?
-### 浣跨敤鏂规硶
+### 这是什么
 
-1. 鍦?`chrome://extensions` 鎵撳紑銆屽紑鍙戣€呮ā寮忋€嶏紝閫夋嫨銆屽姞杞藉凡瑙ｅ帇鐨勬墿灞曠▼搴忋€嶏紝鎸囧悜
-   鏋勫缓浜х墿鐨?`build/chromium` 鐩綍銆?2. **瀵煎叆缈昏瘧妯″瀷**锛堝繀鍋氾紝鍚﹀垯娌℃湁鍙炕璇戠殑璇█锛夛細
-   - 鎵撳紑鎵╁睍璁剧疆椤?鈫?**缈昏瘧妯″瀷** 鈫?銆屽鍏ユā鍨嬫枃浠垛€︺€?   - 閫夋嫨**鍚屼竴涓瑷€鏂瑰悜**鐨勫叏閮ㄦ枃浠讹紙`model.*`銆乣lex.*` 浠ュ強 `vocab.*` 鎴?     `srcvocab.*` + `trgvocab.*`锛夛紝鎵╁睍浼氳嚜鍔ㄨ瘑鍒瑷€瀵瑰苟娉ㄥ唽銆?3. 浣跨敤锛氱偣鍑诲伐鍏锋爮鍥炬爣鍙炕璇戞枃鏈紱鍦ㄤ换鎰忕綉椤典笂閫変腑鏂囧瓧鍙炕璇戦€夊尯锛涘彸閿彍鍗曞彲缈昏瘧鏁撮〉銆?
-#### 濡備綍鑾峰彇妯″瀷鏂囦欢
+一个**完全离线**的 Chromium 浏览器翻译扩展。网页翻译、划词翻译、文本翻译全部在你自己
+的电脑上完成，使用 Firefox 内置翻译所用的同一个引擎（[Bergamot](https://browser.mt)，
+编译为 WebAssembly）。
 
-涓夌鏂瑰紡锛屼换閫夊叾涓€锛?
-**A. 浠庢湰椤圭洰鐨?Release 涓嬭浇妯″瀷鍖咃紙鎺ㄨ崘锛?*
+它不是任何商业翻译接口的壳。没有云端翻译、没有遥测、没有崩溃上报、没有自动更新。
+唯一会联网的地方是构建阶段的模型下载脚本，运行在你自己机器上。
 
-Release 椤甸潰鎻愪緵 `local-translator-models.zip` 鈥斺€?鍏ㄩ儴妯″瀷鏂囦欢**骞抽摵鍦ㄥ帇缂╁寘鏍圭洰褰?*锛屾柟渚?涓€娆℃€у叏閫夈€傝В鍘嬪悗锛屽湪璁剧疆椤甸€変腑浣犺鐢ㄧ殑璇█鏂瑰悜鐨勫叏閮ㄦ枃浠跺嵆鍙€傚寘鍐呯殑 `manifest.json`
-璁板綍浜嗘瘡涓枃浠剁殑鏉ユ簮銆佸ぇ灏忎笌 SHA-256锛屼究浜庢牎楠屻€?
-鍙戝竷鍒楄〃褰撳墠鍖呭惈锛?
-- `en` 鈫?`zh-Hans`锛堣嫳璇?鈫?绠€浣撲腑鏂囷級
+### 技术亮点
 
-鏇村璇█鏂瑰悜璇风敤涓嬮潰鐨勬柟寮?B 鎴?C 鑷鑾峰彇锛涘彂甯冨寘涔熶細闅忕増鏈墿鍏呫€?
-**B. 鐢ㄤ粨搴撻噷鐨勮剼鏈嚜琛屼笅杞?*
+- **引擎与 Firefox 同源。** 使用 Mozilla 通过 Remote Settings 发布的 Bergamot WASM
+  （`v0.4.5`，与 Firefox 122 内置的完全一致），模型文件格式、精度配置（`int8shiftAlphaAll`）
+  与词表布局都与 Firefox 保持一致。
+- **支持中文。** 中文按字形分开发布（`zh-Hans` / `zh-Hant`），扩展内部统一映射为 `zh`，
+  与 `browser.i18n.detectLanguage` 和界面语言码保持一致。
+- **模型不随包分发。** 每个语言方向动辄几十 MB，对多数人无用。扩展默认**不包含任何
+  翻译模型**，由你在设置界面导入，或从 Release 下载模型包。
+- **模型字节不跨上下文传递。** 这是本项目的核心设计约束：MV3 的后台 Service Worker
+  无法创建 `Worker`，翻译跑在 offscreen document 里，而模型数据既过不了
+  `runtime.sendMessage`（Chromium 上限 64 MiB），也过不了长连 `MessagePort`
+  （大 `ArrayBuffer` 的内容会被静默丢弃）。因此后台只传递**文件 URL**，由真正需要字节的
+  worker 自己读取 —— 无论模型在扩展包里还是在你导入的存储里。
+- **导入的模型就地读取。** 导入的模型存进扩展自己的 IndexedDB，worker 在同一来源下直接
+  读取，全程不经过消息通道。
+
+### 使用方法
+
+1. 在 `chrome://extensions` 打开「开发者模式」，选择「加载已解压的扩展程序」，指向
+   构建产物的 `build/chromium` 目录（或从 Release 下载 `local-translator-*.zip` 解压后加载）。
+2. **导入翻译模型**（必做，否则没有可翻译的语言）：
+   - 打开扩展设置页 → **翻译模型** → 「导入模型文件…」
+   - 选择**同一个语言方向**的全部文件：`model.*`、`lex.*`，以及 `vocab.*`，或者
+     `srcvocab.*` 和 `trgvocab.*` 两个都要。扩展会从文件名自动识别语言对。
+3. 使用：点击工具栏图标可翻译文本；在任意网页上选中文字可翻译选区；右键菜单可翻译整页。
+
+#### 如何获取模型文件
+
+三种方式，任选其一：
+
+**A. 从本项目的 Release 下载模型包（推荐）**
+
+Release 页面提供 `local-translator-models.zip` —— 全部模型文件**平铺在压缩包根目录**，方便
+一次性全选。解压后，在设置页选中你要用的语言方向的全部文件即可。包内的 `manifest.json`
+记录了每个文件的来源、大小与 SHA-256，便于校验。
+
+当前发布包含：
+
+- `en` ↔ `zh-Hans`（英语 ↔ 简体中文）
+
+更多语言方向请用下面的方式 B 或 C 自行获取；发布包也会随版本扩充。
+
+**B. 用仓库里的脚本自行下载**
 
 ```bash
-npm run fetch:models -- --pairs en-zh-Hans,zh-Hans-en
+# 只下载模型文件
+npm run fetch:models -- --pairs en-de,de-en
 ```
 
-鏂囦欢浼氬啓鍏?`models/files/`锛屽悓鏃剁敓鎴愭敞鍐岃〃 `models/index.json`銆傜劧鍚庨噸鏂版瀯寤猴紝杩欎簺妯″瀷灏变細
-**闅忔墿灞曚竴璧锋墦鍖?*锛堥€傜敤浜庤嚜鐢ㄦ垨鍐呴儴鍒嗗彂锛夈€?
-**C. 鐩存帴浠?Mozilla 鑾峰彇**
+然后在设置页导入 `models/files/` 下的文件。若要让模型**随扩展一起打包**（自用或内部
+分发），重新构建即可：`npm run build:chromium`。
 
-妯″瀷鐢?Mozilla 浠?MPL-2.0 鍙戝竷锛屾潵婧愭槸 Remote Settings 鐨?`translations-models-v2`
-闆嗗悎锛涜缁冧笌鏁版嵁浠撳簱瑙?[mozilla/translations](https://github.com/mozilla/translations)锛?妯″瀷鏂囦欢鎵樼鍦?`firefox-settings-attachments.cdn.mozilla.net`銆備笅杞藉悗鐨勬枃浠跺悕褰㈠
-`model.enzh.intgemm.alphas.bin.zst`锛岀敤 [zstd](https://github.com/facebook/zstd) 瑙ｅ帇
-锛堝幓鎺?`.zst` 鍚庣紑锛夊嵆鍙鍏ャ€?
-> 鏂囦欢鍚嶉噷鐨?`enzh` 杩欑被浠ｇ爜琛ㄧず璇█鏂瑰悜锛氬墠涓や綅鏄簮璇█锛屽叾浣欐槸鐩爣璇█
-> 锛坄enzh` = 鑻辫鈫掍腑鏂囷級銆傛墿灞曚細鎹鑷姩鍒嗙粍銆?
-### 鏋勫缓
+**C. 直接从 Mozilla 获取**
 
-闇€瑕?Node.js 鈮?22.15锛堟ā鍨嬭剼鏈敤鍒板唴缃?`zstd` 瑙ｅ帇锛夈€?
+模型由 Mozilla 以 MPL-2.0 发布，来源是 Remote Settings 的 `translations-models-v2`
+集合；训练代码与数据见 [mozilla/translations](https://github.com/mozilla/translations)，
+模型文件托管在 `firefox-settings-attachments.cdn.mozilla.net`。下载后的文件名形如
+`model.enzh.intgemm.alphas.bin.zst`，用 [zstd](https://github.com/facebook/zstd) 解压
+（去掉 `.zst` 后缀）即可导入。
+
+> 文件名里的 `enzh` 这类代码表示语言方向：前两位是源语言，其余是目标语言
+> （`enzh` = 英语到中文）。扩展会据此自动分组。
+
+### 构建
+
+需要 Node.js ≥ 22.15（模型脚本用到内置 `zstd` 解压）。
+
 ```bash
 npm ci
-npm run fetch:engine      # 涓嬭浇鍥哄畾鐗堟湰鐨?Bergamot WASM锛堟瀯寤洪樁娈靛敮涓€鑱旂綉姝ラ涔嬩竴锛?npm run fetch:models      # 榛樿鍐欏叆绌烘敞鍐岃〃锛涘姞 --pairs 鎵嶄細鎵撳寘妯″瀷
-npm run build:chromium    # 浜х墿鍦?build/chromium
+npm run fetch:engine      # ① 下载 Bergamot WASM 并构建 translator.worker.js
+npm run fetch:models      # ② 默认写入空注册表；加 --pairs 才会下载模型
+npm run build:chromium    # ③ 打包到 build/chromium
 ```
 
-鐢?`make` 浜﹀彲锛歚make build`銆傛寚瀹氱洰鏍囷細`make build TARGET=chrome`銆?
-浠庢簮鐮佹瀯寤?WASM 寮曟搸闇€瑕?Docker 鎴?Emscripten SDK锛岃
-`thirdparty/bergamot/makefile`銆?
-### 娴嬭瘯
+**顺序不能颠倒**：打包步骤会把 `thirdparty/bergamot/build/` 里的引擎产物复制进扩展，所以
+必须先跑 ①，否则会打进去一个过期的 worker（表现为导入模型后翻译报错）。
+
+用 `make` 亦可，它已经按正确顺序编排：`make build`（等价于 `clean prepare engine models`
+再打包）。指定目标：`make build TARGET=chrome`。
+
+从源码构建 WASM 引擎需要 Docker 或 Emscripten SDK，见 `thirdparty/bergamot/makefile`。
+
+### 测试
 
 ```bash
-npm run test:models      # 妯″瀷娉ㄥ唽琛ㄤ笌閫夋嫨閫昏緫
-npm run test:engine      # 鐪熷疄瀹炰緥鍖?WASM 骞舵牎楠屾墍缁戝畾鐨?API
-npm run test:worker      # 鐢ㄦ瀯寤轰骇鐗╄窇閫氳嫳璇戜腑
-npm run test:browser     # 鍦ㄧ湡瀹?Chromium 閲屽姞杞芥墿灞曞苟缈昏瘧锛堥渶鏈満宸茶 Chromium/Chrome锛?npm test                 # 搴旂敤娴嬭瘯濂椾欢
-npm run audit:offline -- build/chromium   # 瀹¤锛氫骇鐗╀腑涓嶅緱鍑虹幇浠讳綍杩滅▼鍦板潃
+npm run test:models      # 模型注册表与选择逻辑
+npm run test:engine      # 真实实例化 WASM 并校验所绑定的 API
+npm run test:worker      # 用构建产物跑通英译中
+npm run test:browser     # 在真实 Chromium 里加载扩展并翻译（需本机已装 Chromium/Chrome）
+npm test                 # 应用测试套件
+npm run audit:offline -- build/chromium   # 审计：产物中不得出现任何远程地址
 ```
 
-鎵撲竴涓彂甯冪敤鐨勬ā鍨嬪寘锛堢敓鎴?`dist/local-translator-models.zip`锛屽惈 `manifest.json`锛夛細
+打一个发布用的模型包（生成 `dist/local-translator-models.zip`，含 `manifest.json`）：
 
 ```bash
 npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
 ```
 
-### 娉曞緥淇℃伅
+### 法律信息
 
-- **璁稿彲璇?*锛欱SD-3-Clause銆傚畬鏁存枃鏈 [LICENSE](LICENSE)銆備笂娓?Linguist 閲囩敤鍚屼竴璁稿彲锛?  鏈」鐩綔涓鸿鐢熶綔鍝佷繚鐣欏師鏈夌増鏉冨０鏄庡苟娌跨敤璇ヨ鍙€?- **缈昏瘧寮曟搸**锛欱ergamot / Marian锛孧PL-2.0銆?- **缈昏瘧妯″瀷**锛氱敱 Mozilla 鍙戝竷锛孧PL-2.0銆傛ā鍨嬩笉闅忔湰浠撳簱鍒嗗彂锛屼笅杞戒笌浣跨敤璇烽伒瀹堝叾璁稿彲銆?- **涓婃父椤圭洰**锛氭湰椤圭洰 fork 鑷?[translate-tools/linguist](https://github.com/translate-tools/linguist)銆?  渚濇嵁 GPL-3.0 淇濈暀浜嗙浉鍚岀殑璁稿彲涓庣増鏉冨０鏄庛€?- **闅愮**锛氭墿灞曚笉鏀堕泦銆佷笉涓婁紶浠讳綍鏁版嵁銆傜炕璇戝唴瀹广€佸巻鍙茶褰曘€佽瘝鍏镐笌瀵煎叆鐨勬ā鍨嬪潎鍙繚瀛樺湪
-  鏈満銆傚畨瑁呭寘鍐呬笉鍚换浣曡繙绋嬬鐐癸紝鍙敤 `npm run audit:offline` 澶嶆牳銆?- **鍏嶈矗澹版槑**锛氭湰杞欢鎸夊師鏍锋彁渚涳紝涓嶉檮甯︿换浣曟媴淇濄€傜炕璇戠粨鏋滅敱鏈哄櫒鐢熸垚锛屽彲鑳戒笉鍑嗙‘銆?
+- **许可证**：BSD-3-Clause。完整文本见 [LICENSE](LICENSE)。上游 Linguist 采用同一许可，
+  本项目作为衍生作品保留原有版权声明并沿用该许可。
+- **翻译引擎**：Bergamot / Marian，MPL-2.0。
+- **翻译模型**：由 Mozilla 发布，MPL-2.0。模型不随本仓库分发，下载与使用请遵守其许可。
+- **上游项目**：本项目 fork 自 [translate-tools/linguist](https://github.com/translate-tools/linguist)。
+- **隐私**：扩展不收集、不上传任何数据。翻译内容、历史记录、词典与导入的模型均只保存在
+  本机。安装包内不含任何远程端点，可用 `npm run audit:offline` 复核。
+- **免责声明**：本软件按原样提供，不附带任何担保。翻译结果由机器生成，可能不准确。
+
 ---
 
 <a id="en"></a>
@@ -116,7 +163,7 @@ build-time model fetcher, which runs on your machine.
   and model data can travel neither through `runtime.sendMessage` (Chromium caps a message at
   64 MiB) nor through a long-lived `MessagePort` (the contents of large `ArrayBuffer`s are
   silently dropped). The background therefore sends only **file URLs**, and the worker that needs
-  the bytes reads them itself 鈥?whether they live in the extension package or in your imported
+  the bytes reads them itself — whether they live in the extension package or in your imported
   storage.
 - **Imported models are read in place.** Imported models go into the extension's own IndexedDB and
   are read by the worker, same origin, without going through messaging at all.
@@ -124,11 +171,11 @@ build-time model fetcher, which runs on your machine.
 ### Usage
 
 1. Open `chrome://extensions`, enable *Developer mode*, choose *Load unpacked* and point it at
-   `build/chromium`.
-2. **Import a model** (required 鈥?otherwise there is no language to translate):
-   - Open the extension settings 鈫?**Translation models** 鈫?*Import model files鈥?
-   - Select every file for **one direction** (`model.*`, `lex.*` plus either `vocab.*` or
-     `srcvocab.*` + `trgvocab.*`). The language pair is detected from the file names.
+   `build/chromium` (or unzip `local-translator-*.zip` from a release and load that).
+2. **Import a model** (required — otherwise there is no language to translate):
+   - Open the extension settings → **Translation models** → *Import model files…*
+   - Select every file for **one direction**: `model.*`, `lex.*`, and either `vocab.*` or both
+     `srcvocab.*` and `trgvocab.*`. The language pair is detected from the file names.
 3. Use it: the toolbar icon translates text, selecting text on a page offers a translation, and
    the context menu translates a whole page.
 
@@ -152,11 +199,13 @@ More directions can be fetched with option B or C below.
 **B. Fetch them with the script in this repository**
 
 ```bash
-npm run fetch:models -- --pairs en-zh-Hans,zh-Hans-en
+# Download model files only
+npm run fetch:models -- --pairs en-de,de-en
 ```
 
-Files are written to `models/files/` and a registry to `models/index.json`. Rebuild, and those
-models are **bundled with the extension** 鈥?handy for personal or internal distribution.
+Then import the files under `models/files/` through the settings page. To bundle them **into** the
+extension instead (personal or internal distribution), rebuild with
+`npm run build:chromium`.
 
 **C. Get them from Mozilla directly**
 
@@ -173,16 +222,21 @@ collection; the training code and data live in
 
 ### Build
 
-Requires Node.js 鈮?22.15 (the model scripts use the built-in `zstd` decompressor).
+Requires Node.js ≥ 22.15 (the model scripts use the built-in `zstd` decompressor).
 
 ```bash
 npm ci
-npm run fetch:engine      # pinned Bergamot WASM (one of the two network steps, build time only)
-npm run fetch:models      # writes an empty registry; add --pairs to bundle models
-npm run build:chromium    # output in build/chromium
+npm run fetch:engine      # 1. fetch the Bergamot WASM and build translator.worker.js
+npm run fetch:models      # 2. writes an empty registry; add --pairs to download models
+npm run build:chromium    # 3. package into build/chromium
 ```
 
-`make build` wraps the same steps; `make build TARGET=chrome` is the Chrome target.
+**The order matters.** The packaging step copies the engine artifacts out of
+`thirdparty/bergamot/build/`, so step 1 has to run first; otherwise an out-of-date
+worker is packaged and translation of imported models fails.
+
+`make build` wraps the same steps in the right order (`clean prepare engine models`,
+then package); `make build TARGET=chrome` is the Chrome target.
 
 Building the WASM engine from source needs Docker or an Emscripten SDK; see
 `thirdparty/bergamot/makefile`.
@@ -198,8 +252,8 @@ npm test                 # application test suite
 npm run audit:offline -- build/chromium   # fails if any remote endpoint shipped
 ```
 
-Build a distributable model pack (`dist/local-translator-models.zip`, with a
-`manifest.json` inside):
+Build a distributable model pack (`dist/local-translator-models.zip`, with a `manifest.json`
+inside):
 
 ```bash
 npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
@@ -213,8 +267,7 @@ npm run model-pack -- --pairs en-zh-Hans,zh-Hans-en
 - **Translation models**: published by Mozilla under MPL-2.0. They are not distributed in this
   repository; their download and use are subject to that licence.
 - **Upstream**: this project is a fork of
-  [translate-tools/linguist](https://github.com/translate-tools/linguist). The same licence and
-  copyright notices are kept, as GPL-3.0 requires.
+  [translate-tools/linguist](https://github.com/translate-tools/linguist).
 - **Privacy**: the extension collects and uploads nothing. Translations, history, dictionary and
   imported models stay on your device. No remote endpoint is present in the package; verify with
   `npm run audit:offline`.

@@ -38,9 +38,12 @@ export const importModelFiles = async (
 	const entries: Array<ModelFileEntry<File>> = [];
 
 	for (const file of Array.from(files)) {
-		const info = parseModelFilename(file.name);
+		const info = parseModelFilename(file?.name);
 		if (info === null) {
-			skipped.push({ name: file.name, reason: 'unrecognised model filename' });
+			skipped.push({
+				name: file?.name ?? '(unnamed file)',
+				reason: 'unrecognised model filename',
+			});
 			continue;
 		}
 

@@ -2,10 +2,7 @@ import browser from 'webextension-polyfill';
 
 import { BatchTranslator } from '../../../../thirdparty/bergamot/src/frontend/BatchTranslator';
 import { detectLanguage, getMessage } from '../../language';
-import {
-	importedModelFetch,
-	importedModelsProvider,
-} from '../../models/importedModels';
+import { importedModelsProvider } from '../../models/importedModels';
 import { listLanguagePairs } from '../../models/storage';
 
 import { TranslatorBackingWithCache } from './TranslatorBackingWithCache';
@@ -49,10 +46,10 @@ export class BergamotTranslator {
 			},
 		});
 
-		// Models the user imported live in the extension's own storage; the engine
-		// has none of its own, so give it both the list and a way to read them.
+		// Models the user imported live in the extension's own storage. The engine
+		// needs to know which directions exist; it reads the files themselves, so
+		// nothing else has to be handed across the worker boundary.
 		backing.importedModelsProvider = importedModelsProvider;
-		backing.importedModelFetch = importedModelFetch;
 
 		this.translator = new BatchTranslator(backing, {
 			onerror(err) {

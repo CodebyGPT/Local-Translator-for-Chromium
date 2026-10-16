@@ -14,7 +14,7 @@
  *   node scripts/worker-e2e.test.mjs [build/chromium]
  */
 
-import { readFileSync, writeFileSync, unlinkSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -160,13 +160,26 @@ function call(name, args) {
 	});
 }
 
-test('bundled worker translates English to Chinese', async () => {
-	installWorkerGlobals();
+/**
+ * The default build ships no models, so this is usually skipped. It still holds
+ * for a build made with `npm run fetch:models -- --pairs en-zh-Hans,zh-Hans-en`,
+ * which is the case it is here to protect.
+ */
+const registryPath = REGISTRY;
+const bundledPairs = existsSync(registryPath)
+	? Object.keys(JSON.parse(readFileSync(registryPath, 'utf8')))
+	: [];
 
-	const registry = JSON.parse(readFileSync(REGISTRY, 'utf8'));
-	const key = Object.keys(registry).find((k) => k === 'en\tzh-Hans');
-	if (!key) throw new Error(`registry has no en->zh-Hans entry; has: ${Object.keys(registry).join(', ')}`);
-	const parts = registry[key];
+test(
+	'bundled worker translates English to Chinese',
+	{ skip: !bundledPairs.includes('en\tzh-Hans') && 'no bundled en->zh-Hans model' },
+	async () => {
+		installWorkerGlobals();
+
+		const registry = JSON.parse(readFileSync(REGISTRY, 'utf8'));
+		const key = Object.keys(registry).find((k) => k === 'en\tzh-Hans');
+		if (!key) throw new Error(`registry has no en->zh-Hans entry; has: ${Object.keys(registry).join(', ')}`);
+		const parts = registry[key];
 
 	// `translator.worker.js` is a classic script; evaluate it as such rather
 	// than through the ESM loader, so its top level really is the global scope.
@@ -221,4 +234,5 @@ test('bundled worker translates English to Chinese', async () => {
 	if (!texts.some((text) => /[\u4e00-\u9fff]/.test(text))) {
 		throw new Error(`no Chinese output produced: ${JSON.stringify(texts)}`);
 	}
-});
+	},
+);
