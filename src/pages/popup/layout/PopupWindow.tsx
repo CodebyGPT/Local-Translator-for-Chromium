@@ -26,6 +26,14 @@ import { AppConfigType } from '../../../types/runtime';
 
 import './PopupWindow.css';
 
+/**
+ * Where the header logo points.
+ *
+ * The extension ships no models, so the project page is where the model packs
+ * live; the logo is the shortest path there from the popup.
+ */
+const PROJECT_URL = 'https://github.com/CodebyGPT/Local-Translator-for-Chromium';
+
 export const cnPopupWindow = cn('PopupWindow');
 
 export type TranslatorFeatures = {
@@ -296,12 +304,20 @@ export const PopupWindow: FC<PopupWindowProps> = ({
 	return (
 		<div className={cnPopupWindow({ view: isMobile ? 'mobile' : undefined })}>
 			<div className={cnPopupWindow('Header')}>
-				<div className={cnPopupWindow('Logo')}>
+				<Button
+					as="a"
+					type="link"
+					url={PROJECT_URL}
+					target="_blank"
+					title={getMessage('popup_openProject')}
+					view="clear"
+					className={cnPopupWindow('Logo')}
+				>
 					<LogoElement />
 					<span className={cnPopupWindow('LogoText')}>
 						{getMessage('ext_shortName')}
 					</span>
-				</div>
+				</Button>
 				<div className={cnPopupWindow('HeaderMenu')}>
 					<Button
 						as="a"

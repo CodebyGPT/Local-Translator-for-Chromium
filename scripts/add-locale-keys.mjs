@@ -19,6 +19,7 @@ const LOCALES_DIR = path.join(ROOT, 'src', '_locales');
 /** Keys introduced by this fork, with their English text. */
 const KEYS = {
 	settings_section_models: 'Translation models',
+	popup_openProject: 'Open the project page',
 	settings_option_models_desc:
 		'This extension does not ship translation models. Import the files for a language pair to make it available; they are stored on this device and never uploaded.',
 	modelsManager_chooseFiles: 'Import model files…',

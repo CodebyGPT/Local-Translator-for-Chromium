@@ -52,17 +52,27 @@
 
 三种方式，任选其一：
 
-**A. 从本项目的 Release 下载模型包（推荐）**
+**A. 从本项目的 Release 下载语言包（推荐）**
 
-Release 页面提供 `local-translator-models.zip` —— 全部模型文件**平铺在压缩包根目录**，方便
-一次性全选。解压后，在设置页选中你要用的语言方向的全部文件即可。包内的 `manifest.json`
-记录了每个文件的来源、大小与 SHA-256，便于校验。
+语言包发布在**单独的 release** —— [`models-v1`](https://github.com/CodebyGPT/Local-Translator-for-Chromium/releases/tag/models-v1)。
+它们和扩展分开，因为模型来自 Mozilla、变动很少，而扩展会随代码更新。
 
-当前发布包含：
+每个语言一个独立压缩包，全部模型文件**平铺在压缩包根目录**，方便一次性全选。每个包都含
+**双向**（英译该语言、该语言译英）：
 
-- `en` ↔ `zh-Hans`（英语 ↔ 简体中文）
+| 语言包 | 内容 |
+|---|---|
+| `local-translator-models-zh-Hans.zip` | 英语 ↔ 简体中文 |
+| `local-translator-models-zh-Hant.zip` | 英语 ↔ 繁体中文 |
+| `local-translator-models-ja.zip` | 英语 ↔ 日语 |
+| `local-translator-models-ko.zip` | 英语 ↔ 韩语 |
+| `local-translator-models-ru.zip` | 英语 ↔ 俄语 |
+| `local-translator-models-es.zip` | 英语 ↔ 西班牙语 |
+| `local-translator-models-fr.zip` | 英语 ↔ 法语 |
+| `local-translator-models-de.zip` | 英语 ↔ 德语 |
 
-更多语言方向请用下面的方式 B 或 C 自行获取；发布包也会随版本扩充。
+解压后，在设置页选中该语言包里的**全部文件**（都是同一批语言方向）即可。每个包内的
+`manifest.json` 记录了每个文件的来源、大小与 SHA-256，便于校验。
 
 **B. 用仓库里的脚本自行下载**
 
@@ -183,18 +193,29 @@ build-time model fetcher, which runs on your machine.
 
 Pick whichever suits you:
 
-**A. Download the model pack from this project's releases (recommended)**
+**A. Download a language pack from this project's releases (recommended)**
 
-Each release publishes `local-translator-models.zip` with the model files **flat at the archive
-root**, so the whole set can be selected in one go. Unpack it and import the direction you want
-through the settings page; `manifest.json` inside records each file's source, size and SHA-256 so
-the download can be verified.
+The packs live in their **own release**, [`models-v1`](https://github.com/CodebyGPT/Local-Translator-for-Chromium/releases/tag/models-v1),
+separate from the extension: the models come from Mozilla and change rarely, while the extension
+moves with the code.
 
-The current release ships:
+One archive per language, with the model files **flat at the archive root** so the whole set can be
+selected in one go. Every pack contains **both directions** (English to that language and back):
 
-- `en` <-> `zh-Hans` (English <-> Simplified Chinese)
+| Pack | Contents |
+|---|---|
+| `local-translator-models-zh-Hans.zip` | English <-> Simplified Chinese |
+| `local-translator-models-zh-Hant.zip` | English <-> Traditional Chinese |
+| `local-translator-models-ja.zip` | English <-> Japanese |
+| `local-translator-models-ko.zip` | English <-> Korean |
+| `local-translator-models-ru.zip` | English <-> Russian |
+| `local-translator-models-es.zip` | English <-> Spanish |
+| `local-translator-models-fr.zip` | English <-> French |
+| `local-translator-models-de.zip` | English <-> German |
 
-More directions can be fetched with option B or C below.
+Unpack one and select every file in it on the settings page; they all belong to the same
+directions. `manifest.json` inside records each file's source, size and SHA-256 so the download can
+be verified.
 
 **B. Fetch them with the script in this repository**
 

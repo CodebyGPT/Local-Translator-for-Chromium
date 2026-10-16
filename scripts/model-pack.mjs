@@ -49,13 +49,20 @@ const PACK_PAIRS = [
 const MODEL_PARTS = ['model', 'vocab', 'srcvocab', 'trgvocab', 'lex', 'qualityModel'];
 
 function parseArgs(argv) {
-	const args = { out: 'dist', pairs: PACK_PAIRS, all: false, quiet: false };
+	const args = {
+		out: 'dist',
+		pairs: PACK_PAIRS,
+		all: false,
+		quiet: false,
+		name: 'local-translator-models.zip',
+	};
 
 	for (let i = 0; i < argv.length; i++) {
 		const arg = argv[i];
 		if (arg === '--all') args.all = true;
 		else if (arg === '--quiet') args.quiet = true;
 		else if (arg === '--out') args.out = argv[++i];
+		else if (arg === '--name') args.name = String(argv[++i] ?? '');
 		else if (arg === '--pairs') {
 			args.pairs = String(argv[++i] ?? '')
 				.split(',')
@@ -66,6 +73,7 @@ function parseArgs(argv) {
 				[
 					'Usage: node scripts/model-pack.mjs [options]',
 					'  --out <dir>        output directory (default: dist)',
+					'  --name <file>      archive name (default local-translator-models.zip)',
 					'  --pairs a-b,c-d    language pairs to include',
 					'  --all              every pair Mozilla publishes',
 					'  --quiet            only warn and error output',
@@ -346,7 +354,7 @@ async function main() {
 	});
 
 	const zip = buildZip(entries);
-	const zipName = 'local-translator-models.zip';
+	const zipName = args.name;
 	await writeFile(path.join(outDir, zipName), zip);
 
 	log(

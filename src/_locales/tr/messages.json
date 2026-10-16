@@ -652,5 +652,8 @@
 	},
 	"modelsManager_working": {
 		"message": "Importing… large models can take a few seconds."
+	},
+	"popup_openProject": {
+		"message": "Open the project page"
 	}
 }

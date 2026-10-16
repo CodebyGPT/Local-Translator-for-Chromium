@@ -30,10 +30,13 @@ body {
 	margin-left: var(--typography-layout-indent-l-all);
 }
 
-/* Logo */
+/* Logo (a link to the project page, so it must not look like a button) */
 .PopupWindow-Logo {
 	display: inline-flex;
 	align-items: center;
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
 }
 
 .PopupWindow-Logo svg {
@@ -41,6 +44,10 @@ body {
 	vertical-align: middle;
 	width: 28px;
 	height: 28px;
+}
+
+.PopupWindow-Logo:hover {
+	opacity: 0.8;
 }
 
 .PopupWindow-LogoText {
