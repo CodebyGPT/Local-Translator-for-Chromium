@@ -304,6 +304,10 @@ export const PopupWindow: FC<PopupWindowProps> = ({
 	return (
 		<div className={cnPopupWindow({ view: isMobile ? 'mobile' : undefined })}>
 			<div className={cnPopupWindow('Header')}>
+				{/* `raw` keeps the logo and the title as direct flex children: the
+				    button wrapper otherwise nests them in `Button-Content`/`Button-Text`,
+				    where the `align-items: center` of `.PopupWindow-Logo` no longer
+				    reaches the icon and the two do not share a centerline. */}
 				<Button
 					as="a"
 					type="link"
@@ -311,6 +315,7 @@ export const PopupWindow: FC<PopupWindowProps> = ({
 					target="_blank"
 					title={getMessage('popup_openProject')}
 					view="clear"
+					raw
 					className={cnPopupWindow('Logo')}
 				>
 					<LogoElement />

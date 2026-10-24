@@ -1,6 +1,6 @@
 {
 	"name": "local-translator-for-chromium",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Offline-only page translator for Chromium, powered by the Firefox (Bergamot) translation engine",
 	"license": "BSD-3-Clause",
 	"author": "Local Translator for Chromium contributors (fork of Linguist by Vitonsky)",

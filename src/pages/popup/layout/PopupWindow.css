@@ -34,14 +34,17 @@ body {
 .PopupWindow-Logo {
 	display: inline-flex;
 	align-items: center;
+	/* Do not inherit the 64px header line-height: it makes the title's box much
+	   taller than the icon, so the two cannot be optically centered together */
+	line-height: 1;
 	text-decoration: none;
 	color: inherit;
 	cursor: pointer;
 }
 
 .PopupWindow-Logo svg {
-	display: inline-block;
-	vertical-align: middle;
+	display: block;
+	flex: none;
 	width: 28px;
 	height: 28px;
 }
